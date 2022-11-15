@@ -1,50 +1,67 @@
+import java.awt.*;
+
 public class Table {
 
-    public String name;               //name of the hero
-    public int xpos;                  //the x position
-    public int ypos;                  //the y position
-    public int dx;                    //the speed of the hero in the x direction
-    public int dy;                    //the speed of the hero in the y direction
-    public int width;                 //the width of the hero image
-    public int height;                //the height of the hero image
-    public boolean isAlive;           //a boolean to denote if the hero is alive or dead
+    public String name;
+    public int xpos;
+    public int ypos;
+    public int dx;
+    public int dy;
+    public int width;
+    public int height;
+    public boolean isAlive;
+    public boolean didCrash;
+    public Rectangle hitbox;
 
-
-    //This is a constructor that takes 3 parameters.
-    // This allows us to specify the hero's name and position when we build it.
-    public Table(String pName, int pXpos, int pYpos) { // Astronaut constructor
+    public Table(String pName, int pXpos, int pYpos) {
         name = pName;
         xpos = pXpos;
         ypos = pYpos;
-        dx = 10;
-        dy = 0;
+        dx = (int)(Math.random()*10+1);
+        dy = (int)(Math.random()*10+1);
         width = 100;
         height = 100;
         isAlive = true;
+        hitbox = new Rectangle (xpos,ypos,width,height);
+    }
 
-    } // end Table constructor
-
-    //The move method.  Everytime this is run (or "called") the hero's x position and y position change by dx and dy
-    public void move() { // move
+    public void move() {
         xpos = xpos + dx;
         ypos = ypos + dy;
-    } // end move
+    }
 
     public void bounce() {
         xpos = xpos + dx;
         ypos = ypos + dy;
 
-        if (xpos >= 1000 - width || xpos <= 0) { //right or left wall
+        if (xpos >= 1000 - width || xpos <= 0) {
             dx = -dx;
         }
+        if (ypos >= 701 - height || ypos <= 0) {
+            dy = -dy;
+        }
+
+        hitbox = new Rectangle(xpos,ypos,width,height);
     }
 
     public void wrap() {
         xpos = xpos + dx;
         ypos = ypos + dy;
 
-        if (xpos >= 1000 - width){
-            xpos=0;
+        if (xpos >= 1000 && dx > 0) {
+            xpos = -width;
         }
+        if (xpos <= -width && dx < 0) {
+            xpos = 1000;
+        }
+        if (ypos >= 700 && dy > 0) {
+            ypos = -height;
+        }
+        if (ypos <= -height && dy < 0) {
+            ypos = 1000;
+        }
+
+        hitbox = new Rectangle(xpos,ypos,width,height);
     }
 }
+

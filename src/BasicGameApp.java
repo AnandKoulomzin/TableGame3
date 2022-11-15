@@ -4,87 +4,74 @@ import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
-//*******************************************************************************
-// Class Definition Section
-
 public class BasicGameApp implements Runnable {
 
-    //Variable Definition Section
-    //Declare the variables used in the program
-    //You can set their initial values too
-
-    //Sets the width and height of the program window
     final int WIDTH = 1000;
     final int HEIGHT = 700;
 
-    //Declare the variables needed for the graphics
     public JFrame frame;
     public Canvas canvas;
     public JPanel panel;
 
     public BufferStrategy bufferStrategy;
 
-
-    public Image tablePic;
+    public Image deskPic;
     public Image CircleTablePic;
+    public Image backgroundPic;
+    public Image pingPongTablePic;
 
-    //Declare the objects used in the program
-    //These are things that are made up of more than one variable type
-    public Table table;
+    public Table desk;
     public Table CircleTable;
+    public Table pingPongTable;
 
 
-
-    // Main method definition
-    // This is the code that runs first and automatically
     public static void main(String[] args) {
-        BasicGameApp ex = new BasicGameApp();   //creates a new instance of the game
-        new Thread(ex).start();                 //creates a threads & starts up the code in the run( ) method
+        BasicGameApp ex = new BasicGameApp();
+        new Thread(ex).start();
     }
 
-
-    // This section is the setup portion of the program
-    // Initialize your variables and construct your program objects here.
-    public BasicGameApp() { // BasicGameApp constructor
+    public BasicGameApp() {
 
         setUpGraphics();
 
-        //variable and objects
-        //create (construct) the objects needed for the game and load up
-        tablePic = Toolkit.getDefaultToolkit().getImage("Table.jpeg"); //load the picture
-        table = new Table("table",800,400); //construct the astronaut
+        deskPic = Toolkit.getDefaultToolkit().getImage("Table.jpeg");
+        desk = new Table("table",800,400);
 
         CircleTablePic = Toolkit.getDefaultToolkit().getImage("CircleTable.jpeg");
         CircleTable = new Table("CircleTable",400,600);
 
+        pingPongTablePic = Toolkit.getDefaultToolkit().getImage("pingPong.jpeg");
+        pingPongTable = new Table("pingPong",400,600);
 
-    } // end BasicGameApp constructor
+        backgroundPic = Toolkit.getDefaultToolkit().getImage("emptyroom.jpeg");
 
+    }
 
-//*******************************************************************************
-//User Method Section
-//
-// put your code to do things here.
-
-    // main thread
-    // this is the code that plays the game after you set things up
     public void run() {
-        //for the moment we will loop things forever.
+
         while (true) {
-            moveThings();  //move all the game objects
-            render();  // paint the graphics![](../../../Downloads/AstronautGame-master/table.jpeg)
-            pause(20); // sleep for 10 ms
+            moveThings();
+            crash();
+            render();
+            pause(20);
         }
     }
 
     public void moveThings() {
-        //calls the move( ) code in the objects
-        table.bounce();
+        desk.bounce();
         CircleTable.wrap();
+        pingPongTable.bounce();
     }
 
-    //Pauses or sleeps the computer for the amount specified in milliseconds
+    public void crash() {
+        if (desk.hitbox.intersects(CircleTable.hitbox) || (desk.hitbox.intersects(pingPongTable.hitbox)) && desk.didCrash == false) {
+            desk.didCrash=true;
+            System.out.println("CRASH");
+            desk.width=desk.width*2;
+            desk.height=desk.height*2;
+        }
+    }
+
     public void pause(int time ) {
         try {
             Thread.sleep(time);
@@ -92,10 +79,8 @@ public class BasicGameApp implements Runnable {
         }
     }
 
-    //Graphics setup method
     private void setUpGraphics() {
         frame = new JFrame("Application Template");   //Create the program window or frame.  Names it.
-
         panel = (JPanel) frame.getContentPane();  //sets up a JPanel which is what goes in the frame
         panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));  //sizes the JPanel
         panel.setLayout(null);   //set the layout
@@ -121,14 +106,26 @@ public class BasicGameApp implements Runnable {
         System.out.println("DONE graphic setup");
     }
 
-    //Paints things on the screen using bufferStrategy
     private void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
-        //draw the image of the astronaut
-        g.drawImage(tablePic, table.xpos, table.ypos, table.width, table.height, null);
-        g.drawImage(CircleTablePic, CircleTable.xpos, CircleTable.ypos, CircleTable.width, CircleTable.height, null);
+        g.drawImage(backgroundPic, 0,0, WIDTH, HEIGHT,null);
+
+        if (CircleTable.isAlive==true){
+            g.drawImage(CircleTablePic, CircleTable.xpos, CircleTable.ypos, CircleTable.width, CircleTable.height, null);
+            g.drawRect(CircleTable.hitbox.x,CircleTable.hitbox.y,CircleTable.hitbox.width,CircleTable.hitbox.height);
+        }
+
+        if (CircleTable.isAlive==true){
+            g.drawImage(deskPic, desk.xpos, desk.ypos, desk.width, desk.height, null);
+            g.drawRect(desk.hitbox.x,desk.hitbox.y,desk.hitbox.width,desk.hitbox.height);
+        }
+
+        if (pingPongTable.isAlive==true){
+            g.drawImage(pingPongTablePic, pingPongTable.xpos, pingPongTable.ypos, pingPongTable.width, pingPongTable.height, null);
+            g.drawRect(pingPongTable.hitbox.x,pingPongTable.hitbox.y,pingPongTable.hitbox.width,pingPongTable.hitbox.height);
+        }
 
         g.dispose();
         bufferStrategy.show();
