@@ -34,16 +34,16 @@ public class BasicGameApp implements Runnable {
 
         setUpGraphics();
 
-        deskPic = Toolkit.getDefaultToolkit().getImage("Table.jpeg");
+        deskPic = Toolkit.getDefaultToolkit().getImage("Table.png");
         desk = new Table("table",800,400);
 
-        CircleTablePic = Toolkit.getDefaultToolkit().getImage("CircleTable.jpeg");
+        CircleTablePic = Toolkit.getDefaultToolkit().getImage("CircleTable.png");
         CircleTable = new Table("CircleTable",400,600);
 
-        pingPongTablePic = Toolkit.getDefaultToolkit().getImage("pingPong.jpeg");
+        pingPongTablePic = Toolkit.getDefaultToolkit().getImage("pingPong.png");
         pingPongTable = new Table("pingPong",400,600);
 
-        backgroundPic = Toolkit.getDefaultToolkit().getImage("emptyroom.jpeg");
+        backgroundPic = Toolkit.getDefaultToolkit().getImage("emptyRoom5.jpeg");
 
     }
 
@@ -64,13 +64,30 @@ public class BasicGameApp implements Runnable {
     }
 
     public void crash() {
-        if (desk.hitbox.intersects(CircleTable.hitbox) || (desk.hitbox.intersects(pingPongTable.hitbox)) && desk.didCrash == false) {
+        if (desk.hitBox.intersects(CircleTable.hitBox) && desk.didCrash == false) {
             desk.didCrash=true;
-            System.out.println("CRASH");
-            desk.width=desk.width*2;
-            desk.height=desk.height*2;
+            System.out.println("circleTableCRASH");
+            desk.blink=true;
         }
+
+        if (desk.hitBox.intersects(pingPongTable.hitBox) && desk.didCrash == false) {
+            desk.didCrash=true;
+            System.out.println("pingPongTableCRASH");
+            desk.blink=true;
+        }
+        System.out.println(desk.blinkTimer);
+
+        if (desk.blink==true){
+            desk.blinkTimer++;
+        }
+        if (desk.blinkTimer >= 100) {
+            desk.blink = false;
+            desk.blinkTimer = 0;
+        }
+
     }
+
+
 
     public void pause(int time ) {
         try {
@@ -114,17 +131,25 @@ public class BasicGameApp implements Runnable {
 
         if (CircleTable.isAlive==true){
             g.drawImage(CircleTablePic, CircleTable.xpos, CircleTable.ypos, CircleTable.width, CircleTable.height, null);
-            g.drawRect(CircleTable.hitbox.x,CircleTable.hitbox.y,CircleTable.hitbox.width,CircleTable.hitbox.height);
-        }
-
-        if (CircleTable.isAlive==true){
-            g.drawImage(deskPic, desk.xpos, desk.ypos, desk.width, desk.height, null);
-            g.drawRect(desk.hitbox.x,desk.hitbox.y,desk.hitbox.width,desk.hitbox.height);
+//            g.drawRect(CircleTable.hitBox.x,CircleTable.hitBox.y,CircleTable.hitBox.width,CircleTable.hitBox.height);
         }
 
         if (pingPongTable.isAlive==true){
             g.drawImage(pingPongTablePic, pingPongTable.xpos, pingPongTable.ypos, pingPongTable.width, pingPongTable.height, null);
-            g.drawRect(pingPongTable.hitbox.x,pingPongTable.hitbox.y,pingPongTable.hitbox.width,pingPongTable.hitbox.height);
+//            g.drawRect(pingPongTable.hitBox.x,pingPongTable.hitBox.y,pingPongTable.hitBox.width,pingPongTable.hitBox.height);
+        }
+
+        if(desk.blink == true) {
+            if((desk.blinkTimer<5) || (10<desk.blinkTimer && desk.blinkTimer<15) || (20<desk.blinkTimer && desk.blinkTimer<25) || (30<desk.blinkTimer && desk.blinkTimer<35) || (40<desk.blinkTimer && desk.blinkTimer<45) || (50<desk.blinkTimer && desk.blinkTimer<55) || (60<desk.blinkTimer && desk.blinkTimer<65) || (70<desk.blinkTimer && desk.blinkTimer<75) || (80<desk.blinkTimer && desk.blinkTimer<85) || (90<desk.blinkTimer && desk.blinkTimer<95)){
+                g.drawImage(deskPic, desk.xpos, desk.ypos, desk.width, desk.height, null);
+//                g.drawRect(desk.hitBox.x,desk.hitBox.y,desk.hitBox.width,desk.hitBox.height);
+                desk.didCrash=false;
+            }
+        }
+
+        if(desk.blink ==false) {
+            g.drawImage(deskPic, desk.xpos, desk.ypos, desk.width, desk.height, null);
+//            g.drawRect(desk.hitBox.x,desk.hitBox.y,desk.hitBox.width,desk.hitBox.height);
         }
 
         g.dispose();

@@ -11,7 +11,9 @@ public class Table {
     public int height;
     public boolean isAlive;
     public boolean didCrash;
-    public Rectangle hitbox;
+    public Rectangle hitBox;
+    public boolean blink;
+    public int blinkTimer;
 
     public Table(String pName, int pXpos, int pYpos) {
         name = pName;
@@ -22,7 +24,7 @@ public class Table {
         width = 100;
         height = 100;
         isAlive = true;
-        hitbox = new Rectangle (xpos,ypos,width,height);
+        hitBox = new Rectangle (xpos,ypos,width,height);
     }
 
     public void move() {
@@ -41,7 +43,7 @@ public class Table {
             dy = -dy;
         }
 
-        hitbox = new Rectangle(xpos,ypos,width,height);
+        hitBox = new Rectangle(xpos,ypos,width,height);
     }
 
     public void wrap() {
@@ -61,7 +63,7 @@ public class Table {
             ypos = 1000;
         }
 
-        hitbox = new Rectangle(xpos,ypos,width,height);
+        hitBox = new Rectangle(xpos,ypos,width,height);
     }
 }
 
