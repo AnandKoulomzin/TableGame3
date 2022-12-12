@@ -41,7 +41,7 @@ public class BasicGameApp implements Runnable {
         circleTable = new Table("circleTable",400,600);
 
         pingPongTablePic = Toolkit.getDefaultToolkit().getImage("pingPong.png");
-        pingPongTable = new Table("pingPong",400,600);
+        pingPongTable = new Table("pingPong",400,200);
 
         backgroundPic = Toolkit.getDefaultToolkit().getImage("emptyRoom5.jpeg");
 
@@ -182,6 +182,7 @@ public class BasicGameApp implements Runnable {
 
         if (pingPongTable.isAlive==true){
             g.drawImage(pingPongTablePic, pingPongTable.xpos, pingPongTable.ypos, pingPongTable.width, pingPongTable.height, null);
+            System.out.println("xpos:" + pingPongTable.xpos + "ypos:" + pingPongTable.ypos);
 //            g.drawRect(pingPongTable.hitBox.x,pingPongTable.hitBox.y,pingPongTable.hitBox.width,pingPongTable.hitBox.height);
         }
 

@@ -39,11 +39,20 @@ public class Table {
         xpos = xpos + dx;
         ypos = ypos + dy;
 
-        if (xpos >= 1000 - width || xpos <= 0) {
+        if (xpos > 1000 - width && dx>0) {
             dx = -dx;
         }
-        if (ypos >= 701 - height || ypos <= 0) {
+
+        if ( xpos <= 0) {
+            dx = -dx;
+        }
+
+        if (ypos > 701 - height) {
             dy = -dy;
+        }
+
+        if (ypos <=0) {
+            dy=-dy;
         }
         hitBox = new Rectangle(xpos,ypos,width,height);
     }
@@ -52,17 +61,17 @@ public class Table {
         xpos = xpos + dx;
         ypos = ypos + dy;
 
-        if (xpos >= 1000 && dx > 0) {
+        if (xpos > 1000 && dx > 0) {
             xpos = -width;
         }
-        if (xpos <= -width && dx < 0) {
+        if (xpos < -width && dx < 0) {
             xpos = 1000;
         }
-        if (ypos >= 700 && dy > 0) {
+        if (ypos > 700 && dy > 0) {
             ypos = -height;
         }
-        if (ypos <= -height && dy < 0) {
-            ypos = 1000;
+        if (ypos < -height && dy < 0) {
+            ypos = 700;
         }
 
         hitBox = new Rectangle(xpos,ypos,width,height);
