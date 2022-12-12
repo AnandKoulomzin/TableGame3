@@ -14,7 +14,7 @@ public class Table {
     public Rectangle hitBox;
     public boolean blink;
     public int blinkTimer;
-    public boolean wrapping=false;
+    public boolean wrapping=true;
     public boolean isCrashing;
 
     //can use (int)(math.random()*x+1)

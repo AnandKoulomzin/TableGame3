@@ -67,17 +67,11 @@ public class BasicGameApp implements Runnable {
             pingPongTable.wrap();
         }
     }
-
+// this is the crash method; whenever a table crashes this method is used to determine what happens to the tables
     public void crash() {
+
         if(!desk.hitBox.intersects(circleTable.hitBox)){
             desk.isCrashing=false;
-            pingPongTable.isCrashing=false;
-        }
-
-        if(!desk.hitBox.intersects(pingPongTable.hitBox)){
-            desk.isCrashing=false;
-            pingPongTable.isCrashing=false;
-
         }
 
         if (desk.hitBox.intersects(circleTable.hitBox) && desk.isCrashing==false) {
@@ -88,14 +82,10 @@ public class BasicGameApp implements Runnable {
 
         if(!desk.hitBox.intersects(circleTable.hitBox)){
             desk.isCrashing=false;
-            circleTable.isCrashing=false;
-
         }
 
         if(!desk.hitBox.intersects(pingPongTable.hitBox)){
             desk.isCrashing=false;
-            pingPongTable.isCrashing=false;
-
         }
 
         if (desk.hitBox.intersects(pingPongTable.hitBox) && desk.isCrashing==false && pingPongTable.isCrashing==false) {
@@ -106,14 +96,10 @@ public class BasicGameApp implements Runnable {
 
         if(!desk.hitBox.intersects(pingPongTable.hitBox)){
             desk.isCrashing=false;
-            pingPongTable.isCrashing=false;
-
         }
 
-        if(!desk.hitBox.intersects(circleTable.hitBox)){
-            desk.isCrashing=false;
+        if(!pingPongTable.hitBox.intersects(circleTable.hitBox)){
             pingPongTable.isCrashing=false;
-
         }
 
         if (pingPongTable.hitBox.intersects(circleTable.hitBox) && pingPongTable.wrapping==false && pingPongTable.isCrashing==false) {
@@ -122,10 +108,10 @@ public class BasicGameApp implements Runnable {
             System.out.println("wrapping true");
         }
 
-        if(!pingPongTable.hitBox.intersects(desk.hitBox)){
+        if(!pingPongTable.hitBox.intersects(circleTable.hitBox)){
             pingPongTable.isCrashing=false;
-            desk.isCrashing=false;
         }
+
 
         if (pingPongTable.hitBox.intersects(circleTable.hitBox) && pingPongTable.wrapping==true && pingPongTable.isCrashing==false) {
             pingPongTable.wrapping = false;
@@ -133,42 +119,9 @@ public class BasicGameApp implements Runnable {
             System.out.println("wrapping false");
         }
 
-        if (!pingPongTable.hitBox.intersects(desk.hitBox)){
+        if(!pingPongTable.hitBox.intersects(circleTable.hitBox)){
             pingPongTable.isCrashing=false;
-            desk.isCrashing=false;
-        }
-
-        if (pingPongTable.hitBox.intersects(desk.hitBox) && pingPongTable.wrapping==false && pingPongTable.isCrashing==false) {
-            pingPongTable.wrapping=true;
-            pingPongTable.isCrashing=true;
-            System.out.println("wrapping true");
-        }
-
-        if (!pingPongTable.hitBox.intersects(desk.hitBox)){
-            pingPongTable.isCrashing=false;
-            desk.isCrashing=false;
-        }
-
-        if (pingPongTable.hitBox.intersects(desk.hitBox) && pingPongTable.wrapping==true && pingPongTable.isCrashing==false) {
-            pingPongTable.wrapping=false;
-            pingPongTable.isCrashing=true;
-            System.out.println("wrapping false");
-        }
-
-        if (!pingPongTable.hitBox.intersects(desk.hitBox)){
-            pingPongTable.isCrashing=false;
-            desk.isCrashing=false;
-        }
-
-        if (pingPongTable.hitBox.intersects(desk.hitBox) && pingPongTable.wrapping==false && pingPongTable.isCrashing==false) {
-            pingPongTable.wrapping=true;
-            pingPongTable.isCrashing=true;
-            System.out.println("wrapping true");
-        }
-
-        if (!pingPongTable.hitBox.intersects(desk.hitBox)){
-            pingPongTable.isCrashing=false;
-            desk.isCrashing=false;
+            circleTable.isCrashing=false;
         }
 
         System.out.println(desk.blinkTimer);
@@ -181,8 +134,6 @@ public class BasicGameApp implements Runnable {
             desk.blinkTimer = 0;
         }
     }
-
-
 
     public void pause(int time ) {
         try {
