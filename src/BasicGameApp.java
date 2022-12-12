@@ -16,12 +16,12 @@ public class BasicGameApp implements Runnable {
     public BufferStrategy bufferStrategy;
 
     public Image deskPic;
-    public Image CircleTablePic;
+    public Image circleTablePic;
     public Image backgroundPic;
     public Image pingPongTablePic;
 
     public Table desk;
-    public Table CircleTable;
+    public Table circleTable;
     public Table pingPongTable;
 
 
@@ -37,8 +37,8 @@ public class BasicGameApp implements Runnable {
         deskPic = Toolkit.getDefaultToolkit().getImage("Table.png");
         desk = new Table("table",800,400);
 
-        CircleTablePic = Toolkit.getDefaultToolkit().getImage("CircleTable.png");
-        CircleTable = new Table("CircleTable",400,600);
+        circleTablePic = Toolkit.getDefaultToolkit().getImage("circleTable.png");
+        circleTable = new Table("circleTable",400,600);
 
         pingPongTablePic = Toolkit.getDefaultToolkit().getImage("pingPong.png");
         pingPongTable = new Table("pingPong",400,600);
@@ -59,22 +59,118 @@ public class BasicGameApp implements Runnable {
 
     public void moveThings() {
         desk.bounce();
-        CircleTable.wrap();
-        pingPongTable.bounce();
+        circleTable.wrap();
+        if (pingPongTable.wrapping==false) {
+            pingPongTable.bounce();
+        }
+        if (pingPongTable.wrapping==true) {
+            pingPongTable.wrap();
+        }
     }
 
     public void crash() {
-        if (desk.hitBox.intersects(CircleTable.hitBox) && desk.didCrash == false) {
-            desk.didCrash=true;
-            System.out.println("circleTableCRASH");
-            desk.blink=true;
+        if(!desk.hitBox.intersects(circleTable.hitBox)){
+            desk.isCrashing=false;
+            pingPongTable.isCrashing=false;
         }
 
-        if (desk.hitBox.intersects(pingPongTable.hitBox) && desk.didCrash == false) {
-            desk.didCrash=true;
-            System.out.println("pingPongTableCRASH");
-            desk.blink=true;
+        if(!desk.hitBox.intersects(pingPongTable.hitBox)){
+            desk.isCrashing=false;
+            pingPongTable.isCrashing=false;
+
         }
+
+        if (desk.hitBox.intersects(circleTable.hitBox) && desk.isCrashing==false) {
+            desk.blink=true;
+            desk.isCrashing=true;
+            System.out.println("circleTableCRASH");
+        }
+
+        if(!desk.hitBox.intersects(circleTable.hitBox)){
+            desk.isCrashing=false;
+            circleTable.isCrashing=false;
+
+        }
+
+        if(!desk.hitBox.intersects(pingPongTable.hitBox)){
+            desk.isCrashing=false;
+            pingPongTable.isCrashing=false;
+
+        }
+
+        if (desk.hitBox.intersects(pingPongTable.hitBox) && desk.isCrashing==false && pingPongTable.isCrashing==false) {
+            desk.blink = true;
+            desk.isCrashing=true;
+            System.out.println("pingPongTableCRASH");
+        }
+
+        if(!desk.hitBox.intersects(pingPongTable.hitBox)){
+            desk.isCrashing=false;
+            pingPongTable.isCrashing=false;
+
+        }
+
+        if(!desk.hitBox.intersects(circleTable.hitBox)){
+            desk.isCrashing=false;
+            pingPongTable.isCrashing=false;
+
+        }
+
+        if (pingPongTable.hitBox.intersects(circleTable.hitBox) && pingPongTable.wrapping==false && pingPongTable.isCrashing==false) {
+            pingPongTable.wrapping=true;
+            pingPongTable.isCrashing=true;
+            System.out.println("wrapping true");
+        }
+
+        if(!pingPongTable.hitBox.intersects(desk.hitBox)){
+            pingPongTable.isCrashing=false;
+            desk.isCrashing=false;
+        }
+
+        if (pingPongTable.hitBox.intersects(circleTable.hitBox) && pingPongTable.wrapping==true && pingPongTable.isCrashing==false) {
+            pingPongTable.wrapping = false;
+            pingPongTable.isCrashing = true;
+            System.out.println("wrapping false");
+        }
+
+        if (!pingPongTable.hitBox.intersects(desk.hitBox)){
+            pingPongTable.isCrashing=false;
+            desk.isCrashing=false;
+        }
+
+        if (pingPongTable.hitBox.intersects(desk.hitBox) && pingPongTable.wrapping==false && pingPongTable.isCrashing==false) {
+            pingPongTable.wrapping=true;
+            pingPongTable.isCrashing=true;
+            System.out.println("wrapping true");
+        }
+
+        if (!pingPongTable.hitBox.intersects(desk.hitBox)){
+            pingPongTable.isCrashing=false;
+            desk.isCrashing=false;
+        }
+
+        if (pingPongTable.hitBox.intersects(desk.hitBox) && pingPongTable.wrapping==true && pingPongTable.isCrashing==false) {
+            pingPongTable.wrapping=false;
+            pingPongTable.isCrashing=true;
+            System.out.println("wrapping false");
+        }
+
+        if (!pingPongTable.hitBox.intersects(desk.hitBox)){
+            pingPongTable.isCrashing=false;
+            desk.isCrashing=false;
+        }
+
+        if (pingPongTable.hitBox.intersects(desk.hitBox) && pingPongTable.wrapping==false && pingPongTable.isCrashing==false) {
+            pingPongTable.wrapping=true;
+            pingPongTable.isCrashing=true;
+            System.out.println("wrapping true");
+        }
+
+        if (!pingPongTable.hitBox.intersects(desk.hitBox)){
+            pingPongTable.isCrashing=false;
+            desk.isCrashing=false;
+        }
+
         System.out.println(desk.blinkTimer);
 
         if (desk.blink==true){
@@ -84,7 +180,6 @@ public class BasicGameApp implements Runnable {
             desk.blink = false;
             desk.blinkTimer = 0;
         }
-
     }
 
 
@@ -129,8 +224,8 @@ public class BasicGameApp implements Runnable {
 
         g.drawImage(backgroundPic, 0,0, WIDTH, HEIGHT,null);
 
-        if (CircleTable.isAlive==true){
-            g.drawImage(CircleTablePic, CircleTable.xpos, CircleTable.ypos, CircleTable.width, CircleTable.height, null);
+        if (circleTable.isAlive==true){
+            g.drawImage(circleTablePic, circleTable.xpos, circleTable.ypos, circleTable.width, circleTable.height, null);
 //            g.drawRect(CircleTable.hitBox.x,CircleTable.hitBox.y,CircleTable.hitBox.width,CircleTable.hitBox.height);
         }
 
@@ -143,7 +238,6 @@ public class BasicGameApp implements Runnable {
             if((desk.blinkTimer<5) || (10<desk.blinkTimer && desk.blinkTimer<15) || (20<desk.blinkTimer && desk.blinkTimer<25) || (30<desk.blinkTimer && desk.blinkTimer<35) || (40<desk.blinkTimer && desk.blinkTimer<45) || (50<desk.blinkTimer && desk.blinkTimer<55) || (60<desk.blinkTimer && desk.blinkTimer<65) || (70<desk.blinkTimer && desk.blinkTimer<75) || (80<desk.blinkTimer && desk.blinkTimer<85) || (90<desk.blinkTimer && desk.blinkTimer<95)){
                 g.drawImage(deskPic, desk.xpos, desk.ypos, desk.width, desk.height, null);
 //                g.drawRect(desk.hitBox.x,desk.hitBox.y,desk.hitBox.width,desk.hitBox.height);
-                desk.didCrash=false;
             }
         }
 

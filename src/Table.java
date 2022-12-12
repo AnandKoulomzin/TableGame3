@@ -14,7 +14,10 @@ public class Table {
     public Rectangle hitBox;
     public boolean blink;
     public int blinkTimer;
+    public boolean wrapping=false;
+    public boolean isCrashing;
 
+    //can use (int)(math.random()*x+1)
     public Table(String pName, int pXpos, int pYpos) {
         name = pName;
         xpos = pXpos;
@@ -42,7 +45,6 @@ public class Table {
         if (ypos >= 701 - height || ypos <= 0) {
             dy = -dy;
         }
-
         hitBox = new Rectangle(xpos,ypos,width,height);
     }
 
