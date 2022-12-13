@@ -2,6 +2,7 @@ import java.awt.*;
 
 public class Table {
 
+    //variable declaration section, where I decide what variables to use
     public String name;
     public int xpos;
     public int ypos;
@@ -17,7 +18,7 @@ public class Table {
     public boolean wrapping=true;
     public boolean isCrashing;
 
-    //can use (int)(math.random()*x+1)
+    //This is a constructor that decides what each variable is equal to
     public Table(String pName, int pXpos, int pYpos) {
         name = pName;
         xpos = pXpos;
@@ -35,6 +36,7 @@ public class Table {
         ypos = ypos + dy;
     }
 
+    //the bounce method is a method that allows a table to bounce off of walls
     public void bounce() {
         xpos = xpos + dx;
         ypos = ypos + dy;
@@ -57,6 +59,7 @@ public class Table {
         hitBox = new Rectangle(xpos,ypos,width,height);
     }
 
+    //the wrap method is a method that allows tables to teleport across the screen
     public void wrap() {
         xpos = xpos + dx;
         ypos = ypos + dy;
