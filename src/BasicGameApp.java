@@ -66,10 +66,10 @@ public class BasicGameApp implements Runnable {
     public void moveThings() {
         desk.bounce();
         circleTable.wrap();
-        if (!pingPongTable.wrapping) {
+        if (pingPongTable.wrapping==false) {
             pingPongTable.bounce();
         }
-        if (pingPongTable.wrapping) {
+        if (pingPongTable.wrapping==true) {
             pingPongTable.wrap();
         }
     }
@@ -80,7 +80,7 @@ public class BasicGameApp implements Runnable {
             desk.isCrashing=false;
         }
 
-        if (desk.hitBox.intersects(circleTable.hitBox) && !desk.isCrashing) {
+        if (desk.hitBox.intersects(circleTable.hitBox) && desk.isCrashing==false) {
             desk.blink=true;
             desk.isCrashing=true;
             System.out.println("circleTableCRASH");
@@ -94,7 +94,7 @@ public class BasicGameApp implements Runnable {
             desk.isCrashing=false;
         }
 
-        if (desk.hitBox.intersects(pingPongTable.hitBox) && !desk.isCrashing && !pingPongTable.isCrashing) {
+        if (desk.hitBox.intersects(pingPongTable.hitBox) && desk.isCrashing==false && pingPongTable.isCrashing==false) {
             desk.blink = true;
             desk.isCrashing=true;
             System.out.println("pingPongTableCRASH");
@@ -108,7 +108,7 @@ public class BasicGameApp implements Runnable {
             pingPongTable.isCrashing=false;
         }
 
-        if (pingPongTable.hitBox.intersects(circleTable.hitBox) && !pingPongTable.wrapping && !pingPongTable.isCrashing) {
+        if (pingPongTable.hitBox.intersects(circleTable.hitBox) && pingPongTable.wrapping==false && pingPongTable.isCrashing==false) {
             pingPongTable.wrapping=true;
             pingPongTable.isCrashing=true;
             System.out.println("wrapping true");
@@ -119,7 +119,7 @@ public class BasicGameApp implements Runnable {
         }
 
 
-        if (pingPongTable.hitBox.intersects(circleTable.hitBox) && pingPongTable.wrapping && !pingPongTable.isCrashing) {
+        if (pingPongTable.hitBox.intersects(circleTable.hitBox) && pingPongTable.wrapping==true && pingPongTable.isCrashing==false) {
             pingPongTable.wrapping = false;
             pingPongTable.isCrashing = true;
             System.out.println("wrapping false");
@@ -132,7 +132,7 @@ public class BasicGameApp implements Runnable {
 
         System.out.println(desk.blinkTimer);
 
-        if (desk.blink){
+        if (desk.blink==true){
             desk.blinkTimer++;
         }
         if (desk.blinkTimer >= 100) {
@@ -149,7 +149,7 @@ public class BasicGameApp implements Runnable {
         }
     }
 
-    //this is the method that sets up the graphics
+    //this sets up the graphics
     private void setUpGraphics() {
         frame = new JFrame("Application Template");   //Create the program window or frame.  Names it.
         panel = (JPanel) frame.getContentPane();  //sets up a JPanel which is what goes in the frame
@@ -195,14 +195,14 @@ public class BasicGameApp implements Runnable {
 //            g.drawRect(pingPongTable.hitBox.x,pingPongTable.hitBox.y,pingPongTable.hitBox.width,pingPongTable.hitBox.height);
         }
 
-        if(!desk.blink) {
+        if(desk.blink==true) {
             if((desk.blinkTimer<5) || (10<desk.blinkTimer && desk.blinkTimer<15) || (20<desk.blinkTimer && desk.blinkTimer<25) || (30<desk.blinkTimer && desk.blinkTimer<35) || (40<desk.blinkTimer && desk.blinkTimer<45) || (50<desk.blinkTimer && desk.blinkTimer<55) || (60<desk.blinkTimer && desk.blinkTimer<65) || (70<desk.blinkTimer && desk.blinkTimer<75) || (80<desk.blinkTimer && desk.blinkTimer<85) || (90<desk.blinkTimer && desk.blinkTimer<95)){
                 g.drawImage(deskPic, desk.xpos, desk.ypos, desk.width, desk.height, null);
 //                g.drawRect(desk.hitBox.x,desk.hitBox.y,desk.hitBox.width,desk.hitBox.height);
             }
         }
 
-        if(!desk.blink) {
+        if(desk.blink==false) {
             g.drawImage(deskPic, desk.xpos, desk.ypos, desk.width, desk.height, null);
 //            g.drawRect(desk.hitBox.x,desk.hitBox.y,desk.hitBox.width,desk.hitBox.height);
         }
