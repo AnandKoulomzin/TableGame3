@@ -18,6 +18,11 @@ public class Table {
     public boolean wrapping=true;
     public boolean isCrashing;
 
+    public boolean right;
+    public boolean down;
+    public boolean left;
+    public boolean up;
+
     //This is a constructor that decides what each variable is equal to
     public Table(String pName, int pXpos, int pYpos) {
         name = pName;
@@ -32,8 +37,36 @@ public class Table {
     }
 
     public void move() {
-        xpos = xpos + dx;
-        ypos = ypos + dy;
+        if(right){
+            xpos = xpos +dx;
+            if(xpos>1000-width){
+                xpos = 1000-width;
+            }
+        }
+
+        if(left){
+            xpos = xpos -dx;
+            if(xpos<0){
+                xpos = 0;
+            }
+        }
+
+        if(down){
+            ypos = ypos +dy;
+            if(ypos>700-height){
+                ypos = 700-height;
+            }
+        }
+
+        if(up){
+            ypos = ypos -dy;
+            if(ypos<0){
+                ypos = 0;
+            }
+        }
+
+        //always put this after you've done all the changing of the xpos and ypos values
+        hitBox = new Rectangle(xpos, ypos, width, height);
     }
 
     //the bounce method is a method that allows a table to bounce off of walls

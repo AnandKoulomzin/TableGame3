@@ -4,7 +4,9 @@ import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class BasicGameApp implements Runnable {
+import java.awt.event.*;
+
+public class BasicGameApp implements Runnable, KeyListener {
 
 // this is the variable definition section. this section declares the variables in the program
 
@@ -38,6 +40,8 @@ public class BasicGameApp implements Runnable {
 
         setUpGraphics();
 
+        canvas.addKeyListener(this);
+
         deskPic = Toolkit.getDefaultToolkit().getImage("Table.png");
         desk = new Table("table",800,400);
 
@@ -65,7 +69,7 @@ public class BasicGameApp implements Runnable {
     //
     public void moveThings() {
         desk.bounce();
-        circleTable.wrap();
+        circleTable.move();
         if (pingPongTable.wrapping==false) {
             pingPongTable.bounce();
         }
@@ -150,32 +154,6 @@ public class BasicGameApp implements Runnable {
     }
 
     //this sets up the graphics
-    private void setUpGraphics() {
-        frame = new JFrame("Application Template");   //Create the program window or frame.  Names it.
-        panel = (JPanel) frame.getContentPane();  //sets up a JPanel which is what goes in the frame
-        panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));  //sizes the JPanel
-        panel.setLayout(null);   //set the layout
-
-        // creates a canvas which is a blank rectangular area of the screen onto which the application can draw
-        // and trap input events (Mouse and Keyboard events)
-        canvas = new Canvas();
-        canvas.setBounds(0, 0, WIDTH, HEIGHT);
-        canvas.setIgnoreRepaint(true);
-
-        panel.add(canvas);  // adds the canvas to the panel.
-
-        // frame operations
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //makes the frame close and exit nicely
-        frame.pack();  //adjusts the frame and its contents so the sizes are at their default or larger
-        frame.setResizable(false);   //makes it so the frame cannot be resized
-        frame.setVisible(true);      //IMPORTANT!!!  if the frame is not set to visible it will not appear on the screen!
-
-        // sets up things so the screen displays images nicely.
-        canvas.createBufferStrategy(2);
-        bufferStrategy = canvas.getBufferStrategy();
-        canvas.requestFocus();
-        System.out.println("DONE graphic setup");
-    }
 
     //paints the actual images on the screen with bufferStrategy
     private void render() {
@@ -209,5 +187,81 @@ public class BasicGameApp implements Runnable {
 
         g.dispose();
         bufferStrategy.show();
+    }
+
+    public void keyPressed(KeyEvent event) {
+        //This method will do something whenever any key is pressed down.
+        //Put if( ) statements here
+        char key = event.getKeyChar();     //gets the character of the key pressed
+        int keyCode = event.getKeyCode();  //gets the keyCode (an integer) of the key pressed
+        System.out.println("Key Pressed: " + key + "  Code: " + keyCode);
+
+        if (keyCode == 68) { // d
+            circleTable.right = true;
+        }
+        if (keyCode == 83) { // s
+            circleTable.down = true;
+        }
+        if (keyCode == 65) {
+            circleTable.left = true; // a
+        }
+        if(keyCode == 87){
+            circleTable.up = true; // w
+        }
+    }//keyPressed()
+
+    public void keyReleased(KeyEvent event) {
+        char key = event.getKeyChar();
+        int keyCode = event.getKeyCode();
+        //This method will do something when a key is released
+        if (keyCode == 68) {
+            circleTable.right = false;
+        }
+        if (keyCode == 83) {
+            circleTable.down = false;
+        }
+        if (keyCode == 65) {
+            circleTable.left = false; // a
+        }
+        if(keyCode == 87){
+            circleTable.up = false; // w
+        }
+
+    }//keyReleased()
+
+    public void keyTyped(KeyEvent event) {
+        // handles a press of a character key (any key that can be printed but not keys like SHIFT)
+        // we won't be using this method, but it still needs to be in your program
+    }//keyTyped()
+
+
+    //Graphics setup method
+    public void setUpGraphics() {
+        frame = new JFrame("CheeseWorld");   //Create the program window or frame.  Names it.
+
+        panel = (JPanel) frame.getContentPane();  //sets up a JPanel which is what goes in the frame
+        panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));  //sizes the JPanel
+        panel.setLayout(null);   //set the layout
+
+        // creates a canvas which is a blank rectangular area of the screen onto which the application can draw
+        // and trap input events (Mouse and Keyboard events)
+        canvas = new Canvas();
+        canvas.setBounds(0, 0, WIDTH, HEIGHT);
+        canvas.setIgnoreRepaint(true);
+
+        panel.add(canvas);  // adds the canvas to the panel.
+
+        // frame operations
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //makes the frame close and exit nicely
+        frame.pack();  //adjusts the frame and its contents so the sizes are at their default or larger
+        frame.setResizable(false);   //makes it so the frame cannot be resized
+        frame.setVisible(true);      //IMPORTANT!!!  if the frame is not set to visible it will not appear on the screen!
+
+        // sets up things so the screen displays images nicely.
+        canvas.createBufferStrategy(2);
+        bufferStrategy = canvas.getBufferStrategy();
+        canvas.requestFocus();
+        System.out.println("DONE graphic setup");
+
     }
 }
